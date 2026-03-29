@@ -123,3 +123,11 @@ export function addToCart(type, id, name, price) {
   }
   updateCartBadge();
 }
+
+export function updateCartBadge() {
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const badge = document.querySelector(".cart-badge");
+  if (badge) {
+    badge.textContent = totalItems;
+  }
+}
