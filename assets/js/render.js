@@ -311,3 +311,60 @@ export function renderCheckout() {
 
   checkoutView.appendChild(orderBtn);
 }
+// Renderar kvittot
+export function renderConfirmation(orderResult) {
+  const receiptView = document.querySelector(".receipt-view");
+  receiptView.innerHTML = "";
+
+  const imgContainer = document.createElement("div");
+  imgContainer.className = "confirmation-image";
+  const img = document.createElement("img");
+  img.src = "assets/images/foodbox.png";
+  img.alt = "Matlåda";
+  imgContainer.appendChild(img);
+  receiptView.appendChild(imgContainer);
+
+  const heading = document.createElement("h1");
+  heading.className = "confirmation-heading";
+  heading.textContent = "DINA WONTONS TILLAGAS!";
+  receiptView.appendChild(heading);
+
+  // Räkna ut och visa ETA
+  const eta = document.createElement("p");
+  eta.className = "confirmation-eta";
+  let etaMinutes = 5;
+  if (orderResult.eta) {
+    const etaTime = new Date(orderResult.eta);
+    const now = new Date();
+    const diffMs = etaTime - now;
+    // konvertera millisekunder till minuter
+    etaMinutes = Math.max(1, Math.ceil(diffMs / 60000));
+  }
+  eta.textContent = `ETA ${etaMinutes} MIN`;
+  receiptView.appendChild(eta);
+
+  // Skapar order id
+  const orderId = document.createElement("p");
+  orderId.className = "confirmation-order-id";
+  orderId.textContent = `#${orderResult.id}`;
+  receiptView.appendChild(orderId);
+
+  const btnContainer = document.createElement("div");
+  btnContainer.className = "confirmation-buttons";
+
+  const receiptBtn = document.createElement("button");
+  receiptBtn.className = "confirmation-btn-outline";
+  receiptBtn.textContent = "SE KVITTO";
+  receiptBtn.addEventListener("click", () => {
+    renderReceipt(orderResult);
+  });
+  btnContainer.appendChild(receiptBtn);
+
+  const newOrderBtn = document.createElement("button");
+  newOrderBtn.className = "confirmation-btn-solid";
+  newOrderBtn.textContent = "GÖR EN NY BESTÄLLNING";
+  newOrderBtn.addEventListener("click", () => showView("menu-view"));
+  btnContainer.appendChild(newOrderBtn);
+
+  receiptView.appendChild(btnContainer);
+}
