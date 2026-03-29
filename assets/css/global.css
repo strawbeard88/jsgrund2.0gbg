@@ -1,0 +1,21 @@
+:root {
+  --primary-color: #489078;
+  --background-checked: #353131;
+  --background-menu: #605858;
+  --background-unchecked: #837d7c;
+  --text-menu: #eceae7;
+  --background-light: #757575;
+  --error-color: #eb5757;
+  --text-black: black;
+  --text-shadow: rgba(0, 0, 0, 0.3);
+}
+
+* {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+}
