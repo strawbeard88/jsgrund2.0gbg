@@ -269,3 +269,45 @@ export function renderCart() {
   });
   cartView.appendChild(checkoutBtn);
 }
+
+// Renderar checkout sidan
+export function renderCheckout() {
+  const checkoutView = document.querySelector(".checkout-view");
+  checkoutView.innerHTML = "<h1>Kassa</h1>";
+  if (cart.length === 0) {
+    checkoutView.innerHTML += "<p>Ingen beställning</p>";
+    return;
+  }
+  let total = 0;
+  cart.forEach((item) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.textContent = `${item.name} - ${item.price}kr x ${item.quantity} = ${item.price * item.quantity}kr`;
+    checkoutView.appendChild(itemDiv);
+    total += item.price * item.quantity;
+  });
+
+  const totalDiv = document.createElement("div");
+  totalDiv.textContent = `Total: ${total}kr`;
+  checkoutView.appendChild(totalDiv);
+
+  const orderBtn = document.createElement("button");
+  orderBtn.textContent = "Lägg beställning";
+  orderBtn.addEventListener("click", async () => {
+    const orderData = {
+      items: cart.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        type: item.type,
+      })),
+    };
+    const result = await postOrder(orderData);
+    if (result) {
+      renderReceipt(result);
+      showView("receipt-view");
+      cart.length = 0;
+      updateCartBadge();
+    }
+  });
+
+  checkoutView.appendChild(orderBtn);
+}
