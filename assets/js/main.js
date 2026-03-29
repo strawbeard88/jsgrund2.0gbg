@@ -1,5 +1,5 @@
 // Ladda in alla moduler
-import "./apiInit.js";
+import "./apinit.js";
 import { renderMenu, showView } from "./render.js";
 import { setupEventListeners } from "./btn.js";
 import { setupTabNavigation } from "./keyboard.js";

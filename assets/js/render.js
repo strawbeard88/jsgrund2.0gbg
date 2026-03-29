@@ -1,3 +1,5 @@
+import { getMenu } from "./apinit.js";
+
 export let cart = [];
 
 // Function to render the menu items on index.html
