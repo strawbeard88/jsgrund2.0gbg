@@ -166,3 +166,38 @@ function searchIngredients(searchTerm, resultsDiv) {
     });
   }
 }
+
+// Tab navigation setup
+export function setupTabNavigation() {
+  // Meny knapp
+  const menuBtn = document.querySelector(".menu-btn");
+  if (menuBtn) {
+    menuBtn.tabIndex = 0;
+  }
+
+  // Wontons
+  const wontons = document.querySelectorAll(".wonton");
+  wontons.forEach(function (wonton) {
+    wonton.tabIndex = 0;
+
+    // Allow Enter key to click
+    wonton.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        wonton.click();
+      }
+    });
+  });
+
+  // Dippar och drycker
+  const condiments = document.querySelectorAll(".condiment");
+  condiments.forEach(function (condiment) {
+    condiment.tabIndex = 0;
+
+    // tillåt att enter väljer dippen/drycken
+    condiment.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        condiment.click();
+      }
+    });
+  });
+}
