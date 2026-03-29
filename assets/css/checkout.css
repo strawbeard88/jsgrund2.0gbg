@@ -1,0 +1,10 @@
+.checkout-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5em;
+}
+
+.checkout-item-control {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
