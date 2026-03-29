@@ -113,3 +113,13 @@ export async function renderMenu() {
   drinkContainer.appendChild(drinkRows);
   menuContainer.appendChild(drinkContainer);
 }
+
+export function addToCart(type, id, name, price) {
+  const existing = cart.find((item) => item.id === id && item.type === type);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ type, id, name, price, quantity: 1 });
+  }
+  updateCartBadge();
+}
