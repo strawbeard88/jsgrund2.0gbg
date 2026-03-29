@@ -131,3 +131,141 @@ export function updateCartBadge() {
     badge.textContent = totalItems;
   }
 }
+
+// Varukorg renderas i cart-view
+export function renderCart() {
+  const cartView = document.querySelector(".cart-view");
+  cartView.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "cart-header";
+  const cartIcon = document.createElement("img");
+  cartIcon.src = "assets/images/cart.png";
+  cartIcon.alt = "Varukorg";
+  header.appendChild(cartIcon);
+  cartView.appendChild(header);
+
+  if (cart.length === 0) {
+    const emptyMsg = document.createElement("p");
+    emptyMsg.textContent = "Varukorgen är tom";
+    cartView.appendChild(emptyMsg);
+
+    const backBtn = document.createElement("button");
+    backBtn.className = "cart-checkout-btn";
+    backBtn.textContent = "TILLBAKA TILL MENYN";
+    backBtn.addEventListener("click", () => showView("menu-view"));
+    cartView.appendChild(backBtn);
+    return;
+  }
+
+  const itemsContainer = document.createElement("div");
+  itemsContainer.className = "cart-items";
+
+  cart.forEach((item, index) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+
+    const itemRow = document.createElement("div");
+    itemRow.className = "cart-item-row";
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "cart-item-name";
+    nameSpan.textContent = item.name;
+
+    const dots = document.createElement("span");
+    dots.className = "cart-item-dots";
+
+    const priceSpan = document.createElement("span");
+    priceSpan.className = "cart-item-price";
+    priceSpan.textContent = `${item.price} SEK`;
+
+    itemRow.appendChild(nameSpan);
+    itemRow.appendChild(dots);
+    itemRow.appendChild(priceSpan);
+
+    // + och - knapper
+    const controls = document.createElement("div");
+    controls.className = "cart-item-controls";
+
+    const plusBtn = document.createElement("button");
+    plusBtn.textContent = "+";
+    plusBtn.addEventListener("click", () => {
+      item.quantity += 1;
+      updateCartBadge();
+      renderCart();
+    });
+
+    const quantitySpan = document.createElement("span");
+    quantitySpan.className = "cart-item-quantity";
+    quantitySpan.textContent = `${item.quantity} stycken`;
+
+    const minusBtn = document.createElement("button");
+    minusBtn.textContent = "−";
+    minusBtn.addEventListener("click", () => {
+      if (item.quantity > 1) {
+        item.quantity -= 1;
+      } else {
+        cart.splice(index, 1);
+      }
+      updateCartBadge();
+      renderCart();
+    });
+
+    controls.appendChild(plusBtn);
+    controls.appendChild(quantitySpan);
+    controls.appendChild(minusBtn);
+
+    itemDiv.appendChild(itemRow);
+    itemDiv.appendChild(controls);
+    itemsContainer.appendChild(itemDiv);
+  });
+
+  cartView.appendChild(itemsContainer);
+
+  // Räkna ut totalen och visa den
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalDiv = document.createElement("div");
+  totalDiv.className = "cart-total";
+
+  const totalLabel = document.createElement("div");
+  totalLabel.className = "cart-total-label";
+  totalLabel.innerHTML = "<span>TOTALT</span><span>inkl 20% moms</span>";
+
+  const totalAmount = document.createElement("span");
+  totalAmount.className = "cart-total-amount";
+  totalAmount.textContent = `${total} SEK`;
+
+  totalDiv.appendChild(totalLabel);
+  totalDiv.appendChild(totalAmount);
+  cartView.appendChild(totalDiv);
+
+  // Skicka order till api och visa bekräftelsesidan
+  const checkoutBtn = document.createElement("button");
+  checkoutBtn.className = "cart-checkout-btn";
+  checkoutBtn.textContent = "TAKE MY MONEY!";
+  checkoutBtn.addEventListener("click", async () => {
+    // Skapa en alla id så att vi kan uppdatera ordern med antalet av varje
+    const items = [];
+    cart.forEach((item) => {
+      for (let i = 0; i < item.quantity; i++) {
+        items.push(parseInt(item.id));
+      }
+    });
+    const orderData = { items };
+    console.log("Sending order:", orderData);
+    const result = await postOrder(orderData);
+    console.log("Order result:", result);
+    // Kolla så order var korrekt skapad
+    if (result && (result.id || result.order)) {
+      const orderInfo = result.order || result;
+      renderConfirmation(orderInfo);
+      showView("receipt-view");
+      // ränsa varukorgen efter bestälnning
+      cart.length = 0;
+      updateCartBadge();
+    } else {
+      alert("Kunde inte lägga beställningen. Försök igen.");
+    }
+  });
+  cartView.appendChild(checkoutBtn);
+}
