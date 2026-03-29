@@ -311,7 +311,7 @@ export function renderCheckout() {
 
   checkoutView.appendChild(orderBtn);
 }
-// Renderar kvittot
+// Renderar konfermations sidan efter beställning
 export function renderConfirmation(orderResult) {
   const receiptView = document.querySelector(".receipt-view");
   receiptView.innerHTML = "";
@@ -367,4 +367,38 @@ export function renderConfirmation(orderResult) {
   btnContainer.appendChild(newOrderBtn);
 
   receiptView.appendChild(btnContainer);
+}
+
+// renderar kvittot efter beställning
+export function renderReceipt(orderResult) {
+  const receiptView = document.querySelector(".receipt-view");
+  receiptView.innerHTML = "";
+
+  const h1 = document.createElement("h1");
+  h1.className = "receipt-heading";
+  h1.textContent = "KVITTO";
+  receiptView.appendChild(h1);
+
+  const orderId = document.createElement("p");
+  orderId.className = "receipt-order-id";
+  orderId.textContent = `Order: #${orderResult.id}`;
+  receiptView.appendChild(orderId);
+
+  if (orderResult.items) {
+    const itemsContainer = document.createElement("div");
+    itemsContainer.className = "receipt-items";
+    orderResult.items.forEach((item) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "receipt-item";
+      itemDiv.textContent = `${item.name || item.id} x ${item.quantity}`;
+      itemsContainer.appendChild(itemDiv);
+    });
+    receiptView.appendChild(itemsContainer);
+  }
+
+  const newOrderBtn = document.createElement("button");
+  newOrderBtn.className = "confirmation-btn-solid";
+  newOrderBtn.textContent = "GÖR EN NY BESTÄLLNING";
+  newOrderBtn.addEventListener("click", () => showView("menu-view"));
+  receiptView.appendChild(newOrderBtn);
 }
