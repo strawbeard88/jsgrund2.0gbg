@@ -1,0 +1,41 @@
+.menu-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  background-color: var(--primary-color);
+}
+
+.menu-btn {
+  position: relative;
+  padding: 12px;
+  background-color: var(--text-menu);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: var(--error-color);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-btn img {
+  width: 29px;
+  height: 29px;
+  display: block;
+}
+
+.menu-btn:hover {
+  background-color: var(--background-unchecked);
+}
