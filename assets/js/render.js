@@ -402,3 +402,18 @@ export function renderReceipt(orderResult) {
   newOrderBtn.addEventListener("click", () => showView("menu-view"));
   receiptView.appendChild(newOrderBtn);
 }
+
+export function showView(viewClass) {
+  const views = document.querySelectorAll(
+    ".menu-view, .cart-view, .checkout-view, .receipt-view",
+  );
+  views.forEach((view) => (view.style.display = "none"));
+
+  document.querySelector(`.${viewClass}`).style.display = "block";
+
+  if (viewClass === "cart-view") {
+    renderCart();
+  } else if (viewClass === "checkout-view") {
+    renderCheckout();
+  }
+}
