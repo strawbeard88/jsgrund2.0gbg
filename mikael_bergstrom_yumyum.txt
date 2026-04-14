@@ -1,0 +1,3 @@
+Repo: https://github.com/strawbeard88/jsgrund2.0gbg
+pages: https://strawbeard88.github.io/jsgrund2.0gbg/
+

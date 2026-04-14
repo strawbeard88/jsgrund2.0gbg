@@ -1,4 +1,4 @@
-import { getMenu } from "./apinit.js";
+import { getMenu, postOrder } from "./apinit.js";
 
 export let cart = [];
 
